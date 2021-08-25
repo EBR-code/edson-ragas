@@ -90,6 +90,10 @@ def get_all_posts():
     posts = BlogPost.query.all()
     return render_template("index.html", all_posts=posts, logged_in=current_user.is_authenticated)
 
+@app.route('/portfolio')
+def portfolio():
+    return render_template("portfolio.html")
+
 
 @app.route('/register', methods=["GET", "POST"])
 def register():

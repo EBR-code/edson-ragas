@@ -1,3 +1,5 @@
+{% extends 'bootstrap/base.html' %}
+
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
@@ -12,8 +14,13 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="page-heading">
+            {% if msg_sent: %}
             <h1>Contact Me</h1>
             <span class="subheading">Have questions? I have answers.</span>
+            {% else: %}
+            <h1>Message Sent!</h1>
+            {% endif %}
+           
           </div>
         </div>
       </div>
@@ -25,7 +32,9 @@
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
         <p>Want to get in touch? Fill out the form below to send me a message and I will get back to you as soon as possible!</p>
+
         {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+
       </div>
     </div>
   </div>

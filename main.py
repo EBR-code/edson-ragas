@@ -9,16 +9,24 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 from forms import CreatePostForm, CreateSignupForm, LoginForm, CommentForm, ContactForm
 from flask_gravatar import Gravatar
 from functools import wraps
+import smtplib
 import os
 
 
 
 app = Flask(__name__)
+
 # app.config['SECRET_KEY'] = "os.environ.get("SECRET_KEY")"
 app.config['SECRET_KEY'] = "ghadjkhsjdkhfjksdhfjksdjkfhsjkdfh"
 ckeditor = CKEditor(app)
 Bootstrap(app)
+
 gravatar = Gravatar(app, size=100, rating='g', default='retro', force_default=False, force_lower=False, use_ssl=False, base_url=None)
+
+##SMTP SETUP
+BLOG_EMAIL = "edsonragas.blog@gmail.com"
+BLOG_PW = "123QWEasdZXC"
+
 ##CONNECT TO DB
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///blog.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -83,7 +91,7 @@ class Comment(db.Model):
     text = db.Column(db.Text, nullable=False)
 
 
-db.create_all()
+# db.create_all()
 
 
 @app.route('/')
@@ -188,8 +196,18 @@ def about():
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     form = ContactForm()
-    return render_template("contact.html", form=form, logged_in=current_user.is_authenticated)
+    if form.validate_on_submit:
+        email_send(name=form.name.data,email=form.email.data,phone=form.phone.data,message=form.message.data)
+        print("email_send")
+        return render_template("contact.html", form=form, logged_in=current_user.is_authenticated, msg_sent=True)
+    return render_template("contact.html", form=form, logged_in=current_user.is_authenticated, msg_sent=False)
 
+def email_send(name, email, phone, message):
+    email_message=f"Subject: Mail from Porfolio\n\nName:{name},\nEmail:{email},\nPhone:{phone},\nMessage:{message}"
+    with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
+        connection.starttls()
+        connection.login(user=BLOG_EMAIL, password=BLOG_PW)
+        connection.sendmail(from_addr=BLOG_EMAIL, to_addrs="ragasedson@gmail.com", msg=email_message)
 
 @app.route("/new-post", methods=["GET", "POST"])
 @admin_only

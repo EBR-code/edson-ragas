@@ -1,12 +1,107 @@
+{% extends 'bootstrap/base.html' %}
+{% block styles %}
+{{super()}}
+<link rel="stylesheet"
+      href="{{url_for('.static', filename='/css/styles.css')}}">
+{% endblock %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
+
 {% include "header.html" %}
 
-<body>
-    <h1>Edson's Portfolio</h1>
-    
-</body>
+
+  <!-- Introduction -->
+  <header class="masthead" style="background-image: url('https://images.unsplash.com/photo-1629757509637-7c99379d6d26?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80')">
+    <div class="overlay">hey</div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="page-heading">
+            <h1>I'm Edson</h1>
+            <span class="subheading">an aspiring web developer.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- About Me -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <p>Hello, I'm Edson, a highly motivated self-taught web developer, who has a knack for anything tech related. </p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius praesentium recusandae illo eaque architecto error, repellendus iusto reprehenderit, doloribus, minus sunt. Numquam at quae voluptatum in officia voluptas voluptatibus, minus!</p>
+        <p>I used to be a sous chef at a super club in Bali. Took me a couple of years before I decided to really make the leap into becoming a developer.</p>
+
+        
+
+      </div>
+    </div>
+  </div>
+  
+  <hr>
+  <!-- Technical Skill -->
+  <div class="container-fluid" id="skill-section" style="background-image: url('https://images.unsplash.com/photo-1616004655123-818cbd4b3143?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80')">
+    <div class="row">
+      <div class="col-lg-12" id="technical-skill-title">
+        <h1>Technical Skills</h1>
+      </div>
+      <div class="col-md-4">
+        <ul>
+          <h2>Programming Languages</h2>
+          <li>
+            <p>Python</p>
+          </li>
+          <li>
+            <p>HTML 5</p>
+          </li>
+          <li>
+            <p>CSS 3</p>
+          </li>
+          <li>
+            <p>Javascript</p>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h2>Frameworks</h2>
+        <ul>
+          <li>
+            <p>Flask</p>
+          </li>
+          <li>
+            <p>Bootstrap</p>
+          </li>
+          <li>
+            <p>SQLALchemy</p>
+          </li>
+          <li>
+            <p>Jinja</p>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h2>Tools</h2>
+        <ul>
+          <li>
+            <p>Git</p>
+          </li>
+          <li>
+            <p>Github</p>
+          </li>
+          <li>
+            <p>PyCharm</p>
+          </li>
+          <li>
+            <p>VSCode</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
 
-{% include "footer.html" %}
-{% endblock %}
+
+  {% include "footer.html" %}
+  {% endblock %}

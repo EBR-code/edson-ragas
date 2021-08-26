@@ -195,12 +195,13 @@ def about():
 
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
-    form = ContactForm()
-    if form.validate_on_submit:
-        email_send(name=form.name.data,email=form.email.data,phone=form.phone.data,message=form.message.data)
+    contact_form = ContactForm()
+    if contact_form.validate_on_submit():
+        email_send(name=contact_form.name.data,email=contact_form.email.data,phone=contact_form.phone.data,message=contact_form.message.data)
         print("email_send")
-        return render_template("contact.html", form=form, logged_in=current_user.is_authenticated, msg_sent=True)
-    return render_template("contact.html", form=form, logged_in=current_user.is_authenticated, msg_sent=False)
+        return render_template("contact.html", form=contact_form, logged_in=current_user.is_authenticated, msg_sent=True)
+        
+    return render_template("contact.html", form=contact_form, logged_in=current_user.is_authenticated, msg_sent=False)
 
 def email_send(name, email, phone, message):
     email_message=f"Subject: Mail from Porfolio\n\nName:{name},\nEmail:{email},\nPhone:{phone},\nMessage:{message}"

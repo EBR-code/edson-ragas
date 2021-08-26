@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
-from forms import CreatePostForm, CreateSignupForm, LoginForm, CommentForm
+from forms import CreatePostForm, CreateSignupForm, LoginForm, CommentForm, ContactForm
 from flask_gravatar import Gravatar
 from functools import wraps
 import os
@@ -15,7 +15,7 @@ import os
 
 app = Flask(__name__)
 # app.config['SECRET_KEY'] = "os.environ.get("SECRET_KEY")"
-app.config['SECRET_KEY'] = "hkjashdfjkghasjkdfhasjkldhfkl;asdjfhlkjh"
+app.config['SECRET_KEY'] = "ghadjkhsjdkhfjksdhfjksdjkfhsjkdfh"
 ckeditor = CKEditor(app)
 Bootstrap(app)
 gravatar = Gravatar(app, size=100, rating='g', default='retro', force_default=False, force_lower=False, use_ssl=False, base_url=None)
@@ -185,9 +185,10 @@ def about():
     return render_template("about.html", logged_in=current_user.is_authenticated)
 
 
-@app.route("/contact")
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
-    return render_template("contact.html", logged_in=current_user.is_authenticated)
+    form = ContactForm()
+    return render_template("contact.html", form=form, logged_in=current_user.is_authenticated)
 
 
 @app.route("/new-post", methods=["GET", "POST"])

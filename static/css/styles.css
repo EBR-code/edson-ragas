@@ -29,3 +29,8 @@ ul {
 #skill-section p {
   padding-right: 10px;
 }
+
+/* Project Section */
+#project-section {
+  padding: 100px;
+}

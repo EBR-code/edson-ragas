@@ -93,16 +93,14 @@ class Comment(db.Model):
 
 # db.create_all()
 
-
 @app.route('/')
-def get_all_posts():
-    posts = BlogPost.query.all()
-    return render_template("index.html", all_posts=posts, logged_in=current_user.is_authenticated)
-
-@app.route('/portfolio')
 def portfolio():
-    return render_template("portfolio.html")
+    return render_template("portfolio.html", logged_in=current_user.is_authenticated)
 
+@app.route('/blog')
+def blog():
+    posts = BlogPost.query.all()
+    return render_template("blog.html", all_posts=posts, logged_in=current_user.is_authenticated)
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -127,7 +125,7 @@ def register():
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user)
-            return redirect(url_for('get_all_posts'))
+            return redirect(url_for('blog'))
     return render_template("register.html",
                            form=signup_form,
                            logged_in=current_user.is_authenticated)
@@ -145,7 +143,7 @@ def login():
         if user:
             if check_password_hash(user.password, password=password):
                 login_user(user)
-                return redirect(url_for('get_all_posts'))
+                return redirect(url_for('blog'))
             else:
                 flash(message="Wrong password, please try again.")
                 return redirect(url_for('login'))
@@ -160,7 +158,7 @@ def login():
 @app.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('get_all_posts'))
+    return redirect(url_for('blog'))
 
 
 @app.route("/post/<int:post_id>", methods=["GET", "POST"])
@@ -188,9 +186,7 @@ def show_post(post_id):
     )
 
 
-@app.route("/about")
-def about():
-    return render_template("about.html", logged_in=current_user.is_authenticated)
+
 
 
 @app.route("/contact", methods=["GET", "POST"])
@@ -225,7 +221,7 @@ def add_new_post():
         )
         db.session.add(new_post)
         db.session.commit()
-        return redirect(url_for("get_all_posts"))
+        return redirect(url_for("blog"))
     return render_template("make-post.html", form=form, logged_in=current_user.is_authenticated)
 
 
@@ -258,7 +254,7 @@ def delete_post(post_id):
     post_to_delete = BlogPost.query.get(post_id)
     db.session.delete(post_to_delete)
     db.session.commit()
-    return redirect(url_for('get_all_posts'))
+    return redirect(url_for('blog'))
 
 
 if __name__ == "__main__":

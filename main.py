@@ -5,7 +5,14 @@ from datetime import date
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
-from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
+from flask_login import (
+    UserMixin,
+    login_user,
+    LoginManager,
+    login_required,
+    current_user,
+    logout_user,
+)
 from forms import CreatePostForm, CreateSignupForm, LoginForm, CommentForm, ContactForm
 from flask_gravatar import Gravatar
 from functools import wraps
@@ -13,9 +20,9 @@ import smtplib
 import os
 
 
-
 app = Flask(__name__)
 
+<<<<<<< HEAD
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 
 ckeditor = CKEditor(app)
@@ -26,13 +33,36 @@ gravatar = Gravatar(app, size=100, rating='g', default='retro', force_default=Fa
 ##SMTP SETUP
 BLOG_EMAIL = os.environ.get("BLOG_EMAIL")
 BLOG_PW = os.environ.get("BLOG_PW")
+=======
+# app.config['SECRET_KEY'] = "os.environ.get("SECRET_KEY")"
+app.config["SECRET_KEY"] = "ghadjkhsjdkhfjksdhfjksdjkfhsjkdfh"
+ckeditor = CKEditor(app)
+Bootstrap(app)
 
-##CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///blog.db")
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+gravatar = Gravatar(
+    app,
+    size=100,
+    rating="g",
+    default="retro",
+    force_default=False,
+    force_lower=False,
+    use_ssl=False,
+    base_url=None,
+)
+
+# SMTP SETUP
+BLOG_EMAIL = "edsonragas.blog@gmail.com"
+BLOG_PW = "123QWEasdZXC"
+>>>>>>> portfolio-feature
+
+# CONNECT TO DB
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
+    "DATABASE_URL", "sqlite:///blog.db"
+)
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
-##FLASK_LOGIN SETUP
+# FLASK_LOGIN SETUP
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -43,7 +73,7 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-##Create admin-only decorator
+# Create admin-only decorator
 def admin_only(function):
     @wraps(function)
     def decorated_function(*args, **kwargs):
@@ -56,7 +86,8 @@ def admin_only(function):
     return decorated_function
 
 
-##CONFIGURE TABLES
+# CONFIGURE TABLES
+
 
 class User(UserMixin, db.Model):
     __tablename__ = "users"
@@ -93,45 +124,50 @@ class Comment(db.Model):
 
 # db.create_all()
 
-@app.route('/')
+
+@app.route("/")
 def portfolio():
     return render_template("portfolio.html", logged_in=current_user.is_authenticated)
 
-@app.route('/blog')
+
+@app.route("/blog")
 def blog():
     posts = BlogPost.query.all()
-    return render_template("blog.html", all_posts=posts, logged_in=current_user.is_authenticated)
+    return render_template(
+        "blog.html", all_posts=posts, logged_in=current_user.is_authenticated
+    )
 
-@app.route('/register', methods=["GET", "POST"])
+
+@app.route("/register", methods=["GET", "POST"])
 def register():
     signup_form = CreateSignupForm()
     if signup_form.validate_on_submit():
 
         if User.query.filter_by(email=signup_form.email.data).first():
             flash("You've already signed up with this email, log in instead.")
-            return redirect(url_for('login'))
+            return redirect(url_for("login"))
         else:
 
             hash_and_salted_pw = generate_password_hash(
                 password=signup_form.password.data,
-                method='pbkdf2:sha256',
-                salt_length=8
+                method="pbkdf2:sha256",
+                salt_length=8,
             )
             new_user = User(
                 email=signup_form.email.data,
                 password=hash_and_salted_pw,
-                name=signup_form.name.data
+                name=signup_form.name.data,
             )
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user)
-            return redirect(url_for('blog'))
-    return render_template("register.html",
-                           form=signup_form,
-                           logged_in=current_user.is_authenticated)
+            return redirect(url_for("blog"))
+    return render_template(
+        "register.html", form=signup_form, logged_in=current_user.is_authenticated
+    )
 
 
-@app.route('/login', methods=["GET", "POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     login_form = LoginForm()
     if login_form.validate_on_submit():
@@ -143,22 +179,22 @@ def login():
         if user:
             if check_password_hash(user.password, password=password):
                 login_user(user)
-                return redirect(url_for('blog'))
+                return redirect(url_for("blog"))
             else:
                 flash(message="Wrong password, please try again.")
-                return redirect(url_for('login'))
+                return redirect(url_for("login"))
         else:
             flash(message="Email doesn't exist in our database, please Sign Up.")
-            return redirect(url_for('login'))
-    return render_template("login.html",
-                           form=login_form,
-                           logged_in=current_user.is_authenticated)
+            return redirect(url_for("login"))
+    return render_template(
+        "login.html", form=login_form, logged_in=current_user.is_authenticated
+    )
 
 
-@app.route('/logout')
+@app.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for('blog'))
+    return redirect(url_for("blog"))
 
 
 @app.route("/post/<int:post_id>", methods=["GET", "POST"])
@@ -168,12 +204,12 @@ def show_post(post_id):
     if comment_form.validate_on_submit():
         if not current_user.is_authenticated:
             flash(message="You need to login or register to comment.")
-            return redirect(url_for('login'))
+            return redirect(url_for("login"))
 
         new_comment = Comment(
             text=comment_form.comment.data,
             comment_author=current_user,
-            parent_post=requested_post
+            parent_post=requested_post,
         )
         db.session.add(new_comment)
         db.session.commit()
@@ -186,25 +222,41 @@ def show_post(post_id):
     )
 
 
-
-
-
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     contact_form = ContactForm()
     if contact_form.validate_on_submit():
-        email_send(name=contact_form.name.data,email=contact_form.email.data,phone=contact_form.phone.data,message=contact_form.message.data)
+        email_send(
+            name=contact_form.name.data,
+            email=contact_form.email.data,
+            phone=contact_form.phone.data,
+            message=contact_form.message.data,
+        )
         print("email_send")
-        return render_template("contact.html", form=contact_form, logged_in=current_user.is_authenticated, msg_sent=True)
-        
-    return render_template("contact.html", form=contact_form, logged_in=current_user.is_authenticated, msg_sent=False)
+        return render_template(
+            "contact.html",
+            form=contact_form,
+            logged_in=current_user.is_authenticated,
+            msg_sent=True,
+        )
+
+    return render_template(
+        "contact.html",
+        form=contact_form,
+        logged_in=current_user.is_authenticated,
+        msg_sent=False,
+    )
+
 
 def email_send(name, email, phone, message):
-    email_message=f"Subject: Mail from Porfolio\n\nName:{name},\nEmail:{email},\nPhone:{phone},\nMessage:{message}"
+    email_message = f"Subject: Mail from Porfolio\n\nName:{name},\nEmail:{email},\nPhone:{phone},\nMessage:{message}"
     with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
         connection.starttls()
         connection.login(user=BLOG_EMAIL, password=BLOG_PW)
-        connection.sendmail(from_addr=BLOG_EMAIL, to_addrs="ragasedson@gmail.com", msg=email_message)
+        connection.sendmail(
+            from_addr=BLOG_EMAIL, to_addrs="ragasedson@gmail.com", msg=email_message
+        )
+
 
 @app.route("/new-post", methods=["GET", "POST"])
 @admin_only
@@ -217,12 +269,14 @@ def add_new_post():
             body=form.body.data,
             img_url=form.img_url.data,
             author=current_user,
-            date=date.today().strftime("%B %d, %Y")
+            date=date.today().strftime("%B %d, %Y"),
         )
         db.session.add(new_post)
         db.session.commit()
         return redirect(url_for("blog"))
-    return render_template("make-post.html", form=form, logged_in=current_user.is_authenticated)
+    return render_template(
+        "make-post.html", form=form, logged_in=current_user.is_authenticated
+    )
 
 
 @app.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
@@ -234,7 +288,7 @@ def edit_post(post_id):
         subtitle=post.subtitle,
         img_url=post.img_url,
         author=post.author,
-        body=post.body
+        body=post.body,
     )
     if edit_form.validate_on_submit():
         post.title = edit_form.title.data
@@ -245,7 +299,12 @@ def edit_post(post_id):
         db.session.commit()
         return redirect(url_for("show_post", post_id=post.id))
 
-    return render_template("make-post.html", form=edit_form, is_edit=True, logged_in=current_user.is_authenticated)
+    return render_template(
+        "make-post.html",
+        form=edit_form,
+        is_edit=True,
+        logged_in=current_user.is_authenticated,
+    )
 
 
 @app.route("/delete/<int:post_id>")
@@ -254,7 +313,7 @@ def delete_post(post_id):
     post_to_delete = BlogPost.query.get(post_id)
     db.session.delete(post_to_delete)
     db.session.commit()
-    return redirect(url_for('blog'))
+    return redirect(url_for("blog"))
 
 
 if __name__ == "__main__":

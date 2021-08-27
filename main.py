@@ -22,12 +22,21 @@ import os
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
-gravatar = Gravatar(app, size=100, rating='g', default='retro', force_default=False, force_lower=False, use_ssl=False, base_url=None)
+gravatar = Gravatar(
+    app,
+    size=100,
+    rating="g",
+    default="retro",
+    force_default=False,
+    force_lower=False,
+    use_ssl=False,
+    base_url=None,
+)
 
 ##SMTP SETUP
 BLOG_EMAIL = os.environ.get("BLOG_EMAIL")

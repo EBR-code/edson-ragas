@@ -22,7 +22,6 @@ import os
 
 app = Flask(__name__)
 
-<<<<<<< HEAD
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 
 ckeditor = CKEditor(app)
@@ -33,27 +32,6 @@ gravatar = Gravatar(app, size=100, rating='g', default='retro', force_default=Fa
 ##SMTP SETUP
 BLOG_EMAIL = os.environ.get("BLOG_EMAIL")
 BLOG_PW = os.environ.get("BLOG_PW")
-=======
-# app.config['SECRET_KEY'] = "os.environ.get("SECRET_KEY")"
-app.config["SECRET_KEY"] = "ghadjkhsjdkhfjksdhfjksdjkfhsjkdfh"
-ckeditor = CKEditor(app)
-Bootstrap(app)
-
-gravatar = Gravatar(
-    app,
-    size=100,
-    rating="g",
-    default="retro",
-    force_default=False,
-    force_lower=False,
-    use_ssl=False,
-    base_url=None,
-)
-
-# SMTP SETUP
-BLOG_EMAIL = "edsonragas.blog@gmail.com"
-BLOG_PW = "123QWEasdZXC"
->>>>>>> portfolio-feature
 
 # CONNECT TO DB
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(

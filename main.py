@@ -1,4 +1,12 @@
-from flask import Flask, render_template, redirect, url_for, flash, abort
+from flask import (
+    Flask,
+    render_template,
+    redirect,
+    url_for,
+    flash,
+    abort,
+    send_from_directory,
+)
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from datetime import date
@@ -120,6 +128,11 @@ class Comment(db.Model):
 @app.route("/")
 def portfolio():
     return render_template("portfolio.html", logged_in=current_user.is_authenticated)
+
+
+@app.route("/download-resume")
+def download_resume():
+    return send_from_directory(directory="static", filename="files/EdsonRagas.pdf")
 
 
 @app.route("/blog")

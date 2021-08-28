@@ -38,7 +38,7 @@ gravatar = Gravatar(
     base_url=None,
 )
 
-##SMTP SETUP
+# SMTP SETUP
 BLOG_EMAIL = os.environ.get("BLOG_EMAIL")
 BLOG_PW = os.environ.get("BLOG_PW")
 
@@ -53,8 +53,13 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+# DYNAMIC YEAR FOOTER
+@app.context_processor
+def inject_now():
+    return {"now": date.today()}
 
-# userloader
+
+# USERLOADER
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)

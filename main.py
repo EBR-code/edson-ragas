@@ -35,6 +35,7 @@ app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
+# Avatar SETUP
 gravatar = Gravatar(
     app,
     size=100,
@@ -46,11 +47,11 @@ gravatar = Gravatar(
     base_url=None,
 )
 
-# SMTP SETUP
+# SMTP SETUP, emails data from contact form to you.
 BLOG_EMAIL = os.environ.get("BLOG_EMAIL")
 BLOG_PW = os.environ.get("BLOG_PW")
 
-# CONNECT TO DB
+# CONNECT TO DB, primarily uses heroku's free postgres, else uses local sqlite.
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
     "DATABASE_URL", "sqlite:///blog.db"
 )
@@ -61,23 +62,24 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-# DYNAMIC YEAR FOOTER
+# DYNAMIC YEAR FOOTER uses datetime year
 @app.context_processor
 def inject_now():
     return {"now": date.today()}
 
 
-# USERLOADER
+# USERLOADER, read this
+# https://stackoverflow.com/questions/10695093/how-to-implement-user-loader-callback-in-flask-login
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
 
 
-# Create admin-only decorator
+# Create admin-only decorator-admin's id is 1
 def admin_only(function):
     @wraps(function)
     def decorated_function(*args, **kwargs):
-        # if id is not 1 thenr return abord with 403 error
+        # if id is not 1 then return abort with 403 error
         if current_user.id != 1:
             return abort(403)
         # otherwise continue with the route function
@@ -87,8 +89,6 @@ def admin_only(function):
 
 
 # CONFIGURE TABLES
-
-
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
@@ -96,6 +96,8 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100))
     name = db.Column(db.String(100))
     posts = relationship("BlogPost", back_populates="author")
+    # Add parent relationship
+    # "comment author" refers to the comment_author property in the Comment class.
     comments = relationship("Comment", back_populates="comment_author")
 
 
@@ -115,6 +117,9 @@ class BlogPost(db.Model):
 class Comment(db.Model):
     __tablename__ = "comments"
     id = db.Column(db.Integer, primary_key=True)
+    # Add child relationship,
+    # "user.id" refers to the tablename of the User class.
+    # "comments" refers to the comments property in the User class.
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     comment_author = relationship("User", back_populates="comments")
     post_id = db.Column(db.Integer, db.ForeignKey("blog_posts.id"))
@@ -132,7 +137,9 @@ def portfolio():
 
 @app.route("/download-resume")
 def download_resume():
-    return send_from_directory(directory="static", filename="files/EdsonRagas.pdf")
+    return send_from_directory(
+        directory="static", filename="files/Resume-EdsonRagas.pdf"
+    )
 
 
 @app.route("/blog")
@@ -206,6 +213,7 @@ def logout():
 def show_post(post_id):
     requested_post = BlogPost.query.get(post_id)
     comment_form = CommentForm()
+
     if comment_form.validate_on_submit():
         if not current_user.is_authenticated:
             flash(message="You need to login or register to comment.")

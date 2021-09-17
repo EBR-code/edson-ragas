@@ -89,12 +89,16 @@ def admin_only(function):
 
 
 # CONFIGURE TABLES
+# https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html#one-to-one
 class User(UserMixin, db.Model):
     __tablename__ = "users"
+    # A primary key is a field in a table which uniquely identifies each row/record in a database table.
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(100))
+    # Add parent relationship
+    # "author" refers to the author property in the BlogPost class.
     posts = relationship("BlogPost", back_populates="author")
     # Add parent relationship
     # "comment author" refers to the comment_author property in the Comment class.
@@ -104,7 +108,11 @@ class User(UserMixin, db.Model):
 class BlogPost(db.Model):
     __tablename__ = "blog_posts"
     id = db.Column(db.Integer, primary_key=True)
+    # Add child relationship,
+    # "user.id" refers to the tablename of the User class.
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    # Add parent relationship
+    # "post" refers to the posts property in the User class.
     author = relationship("User", back_populates="posts")
     title = db.Column(db.String(250), unique=True, nullable=False)
     subtitle = db.Column(db.String(250), nullable=False)
@@ -119,8 +127,8 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # Add child relationship,
     # "user.id" refers to the tablename of the User class.
-    # "comments" refers to the comments property in the User class.
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    # "comments" refers to the comments property in the User class.
     comment_author = relationship("User", back_populates="comments")
     post_id = db.Column(db.Integer, db.ForeignKey("blog_posts.id"))
     parent_post = relationship("BlogPost", back_populates="comments")
@@ -129,19 +137,20 @@ class Comment(db.Model):
 
 # db.create_all()
 
-
+# Goes to the portfolio page.
 @app.route("/")
 def portfolio():
     return render_template("portfolio.html", logged_in=current_user.is_authenticated)
 
 
+# Retrieves resume.pdf from a static/files directory
 @app.route("/download-resume")
 def download_resume():
     return send_from_directory(
         directory="static", filename="files/Resume-EdsonRagas.pdf"
     )
 
-
+# Goes to blog page, and queries all post in blogpost.
 @app.route("/blog")
 def blog():
     posts = BlogPost.query.all()

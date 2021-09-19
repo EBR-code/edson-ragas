@@ -2,7 +2,7 @@
 {% block styles %}
 {{super()}}
 <link rel="stylesheet"
-      href="{{url_for('.static', filename='/css/styles.css')}}">
+  href="{{url_for('.static', filename='/css/styles.css')}}">
 {% endblock %}
 {% import "bootstrap/wtf.html" as wtf %}
 
@@ -11,120 +11,133 @@
 {% include "header.html" %}
 
 
-  <!-- Introduction -->
-  <header class="masthead" style="background-image: url('https://images.unsplash.com/photo-1629757509637-7c99379d6d26?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80')">
-    <div class="overlay">hey</div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="page-heading">
-            <h1>I'm Edson</h1>
-            <span class="subheading">an aspiring web developer.</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- About Me -->
+<!-- Introduction -->
+<header class="masthead"
+  style="background-image: url('https://images.unsplash.com/photo-1629757509637-7c99379d6d26?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80')">
+  <div class="overlay">hey</div>
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        <p>A self-taught web developer with a strong interest in projects that require both conceptual and analytical thinking. Fully-committed to designing and developing innovative web-based materials that users will love. Always eager to learn more tricks from anyone - regardless of the industry they're working in</p>
-        
-
-        
-
+        <div class="page-heading">
+          <h1>I'm Edson</h1>
+          <span class="subheading">an aspiring web developer.</span>
+        </div>
       </div>
     </div>
   </div>
-  
-  <hr>
-  <!-- Technical Skill -->
-  <div class="container-fluid" id="skill-section" style="background-image: url('https://images.unsplash.com/photo-1616004655123-818cbd4b3143?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80')">
-    <div class="row">
-      <div class="col-lg-12 mx-auto" id="technical-skill-title">
-        <h1>Technical Skills</h1>
-      </div>
-      <div class="col-md-4">
-        <ul>
-          <h2>Programming Languages</h2>
-          <li>
-            <p>Python</p>
-          </li>
-          <li>
-            <p>HTML 5</p>
-          </li>
-          <li>
-            <p>CSS 3</p>
-          </li>
-          <li>
-            <p>Javascript</p>
-          </li>
-        </ul>
-      </div>
-      <div class="col-md-4">
-        <h2>Frameworks</h2>
-        <ul>
-          <li>
-            <p>Flask</p>
-          </li>
-          <li>
-            <p>Bootstrap</p>
-          </li>
-          <li>
-            <p>SQLALchemy</p>
-          </li>
-          <li>
-            <p>Jinja</p>
-          </li>
-        </ul>
-      </div>
-      <div class="col-md-4">
-        <h2>Tools</h2>
-        <ul>
-          <li>
-            <p>Git</p>
-          </li>
-          <li>
-            <p>Github</p>
-          </li>
-          <li>
-            <p>PyCharm</p>
-          </li>
-          <li>
-            <p>VSCode</p>
-          </li>
-        </ul>
-      </div>
+</header>
+
+<!-- About Me -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+      <p>A self-taught web developer with a strong interest in projects that
+        require both conceptual and analytical thinking. Fully-committed to
+        designing and developing innovative web-based materials that users will
+        love. Always eager to learn more tricks from anyone - regardless of the
+        industry they're working in</p>
+
+
+
+
     </div>
   </div>
+</div>
+
 <hr>
-  <!-- Projects Section -->
-  <div class="container" id="projects-section">
-    <h1>Projects</h1>
-    <div class="card-deck">
-      <div class="card">
-        <a  href="{{ url_for('blog') }}" target="_blank"><img class="card-img-top" src="https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="blogapp-img"></a>
-        <div class="card-body">
-          <a  href="{{ url_for('blog') }}"><h3 class="card-title">Blog App</h3></a>
-          <p class="card-text">A full feature blog app built with Flask for back-end, SQLALchemy for database, HTML, CSS and Bootstrap for the front-end</p>
-          <h4 class="card-text">Features include:</h4>
-          <p class="card-text">SQL CRUD</p>
-          <p class="card-text">User Authentication with werkzeug</p>
-          <p class="card-text">RESTful routing</p>
-          <p class="card-text">Commenting System</p>
-        </div>
-        <div class="card-footer">
-          <a href="https://github.com/SkyDaddy/edson-blog">
-            <small class="text-muted">Click to view code on <i class="fab fa-github-square fa-2x"></i>
-            </small>
-          </a>
-        </div>
+<!-- Technical Skill -->
+<div class="container-fluid" id="skill-section"
+  style="background-image: url('https://images.unsplash.com/photo-1616004655123-818cbd4b3143?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80')">
+  <div class="row">
+    <div class="col-lg-12 mx-auto" id="technical-skill-title">
+      <h1>Technical Skills</h1>
+    </div>
+    <div class="col-md-4">
+      <ul>
+        <h2>Programming Languages</h2>
+        <li>
+          <p>Python</p>
+        </li>
+        <li>
+          <p>HTML 5</p>
+        </li>
+        <li>
+          <p>CSS 3</p>
+        </li>
+        <li>
+          <p>Javascript</p>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-4">
+      <h2>Frameworks</h2>
+      <ul>
+        <li>
+          <p>Flask</p>
+        </li>
+        <li>
+          <p>Bootstrap</p>
+        </li>
+        <li>
+          <p>SQLALchemy</p>
+        </li>
+        <li>
+          <p>Jinja</p>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-4">
+      <h2>Tools</h2>
+      <ul>
+        <li>
+          <p>Git</p>
+        </li>
+        <li>
+          <p>Github</p>
+        </li>
+        <li>
+          <p>PyCharm</p>
+        </li>
+        <li>
+          <p>VSCode</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<hr>
+<!-- Projects Section -->
+<div class="container" id="projects-section">
+  <h1>Projects</h1>
+  <div class="card-deck">
+    <div class="card">
+      <a href="{{ url_for('blog') }}" target="_blank"><img class="card-img-top"
+          src="https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
+          alt="blogapp-img"></a>
+      <div class="card-body">
+        <a href="{{ url_for('blog') }}">
+          <h3 class="card-title">Blog App</h3>
+        </a>
+        <p class="card-text">A full feature blog app built with Flask for
+          back-end, SQLALchemy for database, HTML, CSS and Bootstrap for the
+          front-end</p>
+        <h4 class="card-text">Features include:</h4>
+        <p class="card-text">SQL CRUD</p>
+        <p class="card-text">User Authentication with werkzeug</p>
+        <p class="card-text">RESTful routing</p>
+        <p class="card-text">Commenting System</p>
       </div>
+      <div class="card-footer">
+        <a href="https://github.com/EBR-code/edson-ragas">
+          <small class="text-muted">Click to view code on <i
+              class="fab fa-github-square fa-2x"></i>
+          </small>
+        </a>
+      </div>
+    </div>
 
-      
-      <!-- <div class="card">
+
+    <!-- <div class="card">
         <img class="card-img-top" src="..." alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">Card title</h5>
@@ -135,8 +148,8 @@
         </div>
       </div> -->
 
-      <!-- use code below if another project comes up -->
-      <!-- <div class="card">
+    <!-- use code below if another project comes up -->
+    <!-- <div class="card">
         <img class="card-img-top" src="..." alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">Card title</h5>
@@ -146,10 +159,10 @@
           <small class="text-muted">Last updated 3 mins ago</small>
         </div>
       </div> -->
-    </div>
   </div>
+</div>
 
 
 
-  {% include "footer.html" %}
-  {% endblock %}
+{% include "footer.html" %}
+{% endblock %}

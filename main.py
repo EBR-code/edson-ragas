@@ -150,7 +150,8 @@ def download_resume():
         directory="static", filename="files/Resume-EdsonRagas.pdf"
     )
 
-# Goes to blog page, and queries all post in blogpost.
+
+# Goes to blog page, and queries all post in Blogpost db.
 @app.route("/blog")
 def blog():
     posts = BlogPost.query.all()
